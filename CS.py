@@ -1,4 +1,5 @@
 import requests
+import Tkinter
 
 print('The Following Currencies are Supported')
 print ('US Dollar: USD')
@@ -12,13 +13,20 @@ print ('Thai Baht: THB')
 print ('Swiss Franc: CHF')
 print ('Japanse Yen: JPY')
 
-i=raw_input('Enter First Currency')
-s=raw_input('Enter Second Currency')
+x=0
 
+while x<10:
+    i=raw_input('Enter First Currency')
+    s=raw_input('Enter Second Currency')
+    t=input('Enter Amount to be converted')
 
-url = 'https://v3.exchangerate-api.com/pair/0590ded83b96e28eebc919b0/%s/%s' %(i,s)
+    url = 'https://v3.exchangerate-api.com/pair/0590ded83b96e28eebc919b0/%s/%s' %(i,s)
 
-response = requests.get(url)
-data = response.json()
+    response = requests.get(url)
+    data = response.json()
 
-print data['rate']
+    y=data['rate']
+    print y
+    print y*t
+    x+=1
+
