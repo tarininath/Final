@@ -2,7 +2,6 @@ import requests
 from Tkinter import *
 import ttk
 import json
-import urllib2
 
 root = Tk()
 root.title("Currency Converter")
@@ -17,9 +16,8 @@ LeftMain=Frame(root, width=660, height=400, bd=8, relief="raise")
 LeftMain.pack(side=LEFT)
 RightMain=Frame(root, width=200, height=400, bd=8, relief="raise")
 RightMain.pack(side=RIGHT)
-DateofOrder = StringVar()
-valueO = StringVar()
-value1=StringVar()
+country1 = StringVar()
+country2=StringVar()
 convert = DoubleVar()
 currency = DoubleVar()
 
@@ -27,14 +25,14 @@ EntCurrency= Entry(LeftMain,font=('arial',20,'bold'), textvariable=convert,bd=2,
 EntCurrency.grid(row=0,column=1)
 # now we have the amount to be converted in the variable "convert"
 
-box1 = ttk.Combobox (LeftMain, textvariable=valueO, state='randomly',font=('Arial',20,'bold'),width=20)
+box1 = ttk.Combobox (LeftMain, textvariable=country1, state='randomly',font=('Arial',20,'bold'),width=20)
 box1['values'] = (' ', 'US Dollar', 'Indian Rupee', 'British Pound', 'European Euro', 'South African Rand', 'Hong Kong Dollar', 'Singapore Dollar', 'Thai Baht', 'Swiss Franc', 'Japanese Yen')
 box1.current(0)
 box1.grid(row=0, column=3)
 # now we have the currency of the country FROM which we intend to convert in variable "valueO"
 
 
-box2 = ttk.Combobox (LeftMain, textvariable=value1, state='randomly',font=('Arial',20,'bold'),width=20)
+box2 = ttk.Combobox (LeftMain, textvariable=country2, state='randomly',font=('Arial',20,'bold'),width=20)
 box2['values'] =(' ', 'US Dollar', 'Indian Rupee', 'British Pound', 'European Euro', 'South African Rand', 'Hong Kong Dollar', 'Singapore Dollar', 'Thai Baht', 'Swiss Franc', 'Japanese Yen')
 box2.current(0)
 box2.grid(row=4, column=3)
@@ -45,8 +43,8 @@ lblCurrency.grid(row=4,column=1)
 
 def setval():
     
-    valueO = box1.get()
-    value1 = box2.get()
+    country1 = box1.get()
+    country2 = box2.get()
 
     fromCurr = ''
     toCurr = ''
@@ -54,19 +52,21 @@ def setval():
     currencies = ['US Dollar', 'Indian Rupee', 'British Pound', 'European Euro', 'South African Rand', 'Hong Kong Dollar', 'Singapore Dollar', 'Thai Baht', 'Swiss Franc', 'Japanese Yen']
     currcodes = ['USD', 'INR', 'GBP', 'EUR', 'ZAR', 'HKD', 'SGD', 'THB', 'CHF', 'JPY']
     for i in range(len(currencies)):
-        if valueO==currencies[i]:
+        if country1==currencies[i]:
             fromCurr=currcodes[i]
     for i in range(len(currencies)):
-        if value1==currencies[i]:
+        if country2==currencies[i]:
             toCurr=currcodes[i]
     
-    url = 'https://v3.exchangerate-api.com/pair/0590ded83b96e28eebc919b0/%s/%s' %(fromCurr,toCurr)
+    url = 'https://v3.exchangerate-api.com/pair/0590ded83b96e28eebc919b0/%s/%s' %(fromCurr,toCurr) 
 
     response = requests.get(url)
     data = response.json()
 
     Rate = data['rate']
     Ans = Rate*convert.get()
+    Ans = str(round(Ans, 2))
+
     
     currency.set(Ans)
 
